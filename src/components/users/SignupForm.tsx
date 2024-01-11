@@ -31,8 +31,7 @@ export default function SignupForm() {
 
 		if (name === 'email') {
 			setEmail(value);
-			const validRegex =
-				/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+			const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 			if (!value?.match(validRegex)) {
 				setError('이메일 형식이 올바르지 않습니다.');
@@ -71,30 +70,16 @@ export default function SignupForm() {
 			<div className="form__title">회원가입</div>
 			<div className="form__block">
 				<label htmlFor="email">이메일</label>
-				<input
-					type="text"
-					name="email"
-					id="email"
-					value={email}
-					onChange={onChange}
-					required
-				/>
+				<input type="text" name="email" id="email" value={email} onChange={onChange} required />
 			</div>
 			<div className="form__block">
 				<label htmlFor="password">비밀번호</label>
-				<input
-					type="text"
-					name="password"
-					id="password"
-					value={password}
-					onChange={onChange}
-					required
-				/>
+				<input type="password" name="password" id="password" value={password} onChange={onChange} required />
 			</div>
 			<div className="form__block">
 				<label htmlFor="password_confirmation">비밀번호 확인</label>
 				<input
-					type="text"
+					type="password"
 					name="password_confirmation"
 					id="password_confirmation"
 					value={passwordConfirmation}
@@ -109,16 +94,12 @@ export default function SignupForm() {
 			)}
 			<div className="form__block">
 				계정이 있으신가요?
-				<Link to="/login" className="form__link">
+				<Link to="/users/login" className="form__link">
 					로그인하기
 				</Link>
 			</div>
-			<div className="form__block">
-				<button
-					type="submit"
-					className="form__btn--submit"
-					disabled={error?.length > 0}
-				>
+			<div className="form__block--lg">
+				<button type="submit" className="form__btn--submit" disabled={error?.length > 0}>
 					회원가입
 				</button>
 			</div>
