@@ -1,15 +1,15 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from 'pages/home';
+import NotificationsPage from 'pages/notifications';
 import PostListPage from 'pages/posts';
 import PostDetail from 'pages/posts/detail';
-import PostNew from 'pages/posts/new';
 import PostEdit from 'pages/posts/edit';
+import PostNew from 'pages/posts/new';
 import ProfilePage from 'pages/profile';
 import ProfileEdit from 'pages/profile/edit';
 import SearchPage from 'pages/search';
-import NotificationsPage from 'pages/notifications';
 import LoginPage from 'pages/users/login';
 import SignupPage from 'pages/users/signup';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 interface RouterProps {
 	isAuthenticated: boolean;
@@ -29,6 +29,7 @@ export default function Router({ isAuthenticated }: RouterProps) {
 					<Route path="/profile/edit" element={<ProfileEdit />} />
 					<Route path="/notifications" element={<NotificationsPage />} />
 					<Route path="/search" element={<SearchPage />} />
+					<Route path="*" element={<Navigate replace to="/" />} />
 				</>
 			) : (
 				<>

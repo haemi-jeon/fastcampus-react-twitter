@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-	GithubAuthProvider,
-	GoogleAuthProvider,
 	getAuth,
 	signInWithEmailAndPassword,
 	signInWithPopup,
+	GoogleAuthProvider,
+	GithubAuthProvider,
 } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginForm() {
 	const [error, setError] = useState<string>('');
@@ -72,9 +71,8 @@ export default function LoginForm() {
 			provider = new GithubAuthProvider();
 		}
 
-		await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider)
+		await signInWithPopup(auth, provider as GithubAuthProvider | GoogleAuthProvider)
 			.then((result) => {
-				console.log(result);
 				toast.success('로그인 되었습니다.');
 			})
 			.catch((error) => {
@@ -89,17 +87,18 @@ export default function LoginForm() {
 			<div className="form__title">로그인</div>
 			<div className="form__block">
 				<label htmlFor="email">이메일</label>
-				<input type="text" name="email" id="email" value={email} onChange={onChange} required />
+				<input type="text" name="email" id="email" value={email} required onChange={onChange} />
 			</div>
 			<div className="form__block">
 				<label htmlFor="password">비밀번호</label>
 				<input type="password" name="password" id="password" value={password} onChange={onChange} required />
 			</div>
-			{error && error.length > 0 && (
+			{error && error?.length > 0 && (
 				<div className="form__block">
 					<div className="form__error">{error}</div>
 				</div>
 			)}
+
 			<div className="form__block">
 				계정이 없으신가요?
 				<Link to="/users/signup" className="form__link">
@@ -118,7 +117,7 @@ export default function LoginForm() {
 			</div>
 			<div className="form__block">
 				<button type="button" name="github" className="form__btn--github" onClick={onClickSocialLogin}>
-					Gitub로 로그인
+					Github으로 로그인
 				</button>
 			</div>
 		</form>

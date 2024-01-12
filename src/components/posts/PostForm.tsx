@@ -19,7 +19,7 @@ export default function PostForm() {
 		try {
 			await addDoc(collection(db, 'posts'), {
 				content: content,
-				createAt: new Date()?.toLocaleDateString('ko', {
+				createdAt: new Date()?.toLocaleDateString('ko', {
 					hour: '2-digit',
 					minute: '2-digit',
 					second: '2-digit',
@@ -30,7 +30,7 @@ export default function PostForm() {
 			setContent('');
 			toast.success('게시글을 생성했습니다.');
 		} catch (e: any) {
-			// console.log(e);
+			console.log(e);
 		}
 	};
 
