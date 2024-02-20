@@ -35,7 +35,8 @@ export default function LoginForm() {
 
 		if (name === 'email') {
 			setEmail(value);
-			const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+			const validRegex =
+				/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 			if (!value?.match(validRegex)) {
 				setError('이메일 형식이 올바르지 않습니다.');
@@ -71,8 +72,12 @@ export default function LoginForm() {
 			provider = new GithubAuthProvider();
 		}
 
-		await signInWithPopup(auth, provider as GithubAuthProvider | GoogleAuthProvider)
+		await signInWithPopup(
+			auth,
+			provider as GithubAuthProvider | GoogleAuthProvider
+		)
 			.then((result) => {
+				console.log(result);
 				toast.success('로그인 되었습니다.');
 			})
 			.catch((error) => {
@@ -87,11 +92,25 @@ export default function LoginForm() {
 			<div className="form__title">로그인</div>
 			<div className="form__block">
 				<label htmlFor="email">이메일</label>
-				<input type="text" name="email" id="email" value={email} required onChange={onChange} />
+				<input
+					type="text"
+					name="email"
+					id="email"
+					value={email}
+					required
+					onChange={onChange}
+				/>
 			</div>
 			<div className="form__block">
 				<label htmlFor="password">비밀번호</label>
-				<input type="password" name="password" id="password" value={password} onChange={onChange} required />
+				<input
+					type="password"
+					name="password"
+					id="password"
+					value={password}
+					onChange={onChange}
+					required
+				/>
 			</div>
 			{error && error?.length > 0 && (
 				<div className="form__block">
@@ -106,17 +125,31 @@ export default function LoginForm() {
 				</Link>
 			</div>
 			<div className="form__block--lg">
-				<button type="submit" className="form__btn--submit" disabled={error?.length > 0}>
+				<button
+					type="submit"
+					className="form__btn--submit"
+					disabled={error?.length > 0}
+				>
 					로그인
 				</button>
 			</div>
 			<div className="form__block">
-				<button type="button" name="google" className="form__btn--google" onClick={onClickSocialLogin}>
+				<button
+					type="button"
+					name="google"
+					className="form__btn--google"
+					onClick={onClickSocialLogin}
+				>
 					Google로 로그인
 				</button>
 			</div>
 			<div className="form__block">
-				<button type="button" name="github" className="form__btn--github" onClick={onClickSocialLogin}>
+				<button
+					type="button"
+					name="github"
+					className="form__btn--github"
+					onClick={onClickSocialLogin}
+				>
 					Github으로 로그인
 				</button>
 			</div>

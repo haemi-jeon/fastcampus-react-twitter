@@ -2,8 +2,9 @@ import { useContext, useEffect, useState } from 'react';
 
 import PostForm from 'components/posts/PostForm';
 import PostBox from 'components/posts/PostBox';
+
+import { collection, query, onSnapshot, orderBy } from 'firebase/firestore';
 import AuthContext from 'context/AuthContext';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from 'firebaseApp';
 
 export interface PostProps {
@@ -48,6 +49,7 @@ export default function HomePage() {
 					<div className="home__tab">Following</div>
 				</div>
 			</div>
+
 			<PostForm />
 			<div className="post">
 				{posts?.length > 0 ? (

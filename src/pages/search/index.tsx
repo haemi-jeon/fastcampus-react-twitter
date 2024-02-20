@@ -1,9 +1,15 @@
+import { useEffect, useState, useContext } from 'react';
 import PostBox from 'components/posts/PostBox';
-import AuthContext from 'context/AuthContext';
-import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
-import { db } from 'firebaseApp';
 import { PostProps } from 'pages/home';
-import { useContext, useEffect, useState } from 'react';
+import AuthContext from 'context/AuthContext';
+import {
+	collection,
+	query,
+	where,
+	orderBy,
+	onSnapshot,
+} from 'firebase/firestore';
+import { db } from 'firebaseApp';
 
 export default function SearchPage() {
 	const [posts, setPosts] = useState<PostProps[]>([]);
@@ -16,9 +22,9 @@ export default function SearchPage() {
 
 	useEffect(() => {
 		if (user) {
-			let postRef = collection(db, 'posts');
+			let postsRef = collection(db, 'posts');
 			let postsQuery = query(
-				postRef,
+				postsRef,
 				where('hashTags', 'array-contains-any', [tagQuery]),
 				orderBy('createdAt', 'desc')
 			);
@@ -41,7 +47,11 @@ export default function SearchPage() {
 					<div className="home__title-text">Search</div>
 				</div>
 				<div className="home__search-div">
-					<input type="text" className="home__search" placeholder="해시태그 검색" onChange={onChange} />
+					<input
+						className="home__search"
+						placeholder="해시태그 검색"
+						onChange={onChange}
+					/>
 				</div>
 			</div>
 			<div className="post">

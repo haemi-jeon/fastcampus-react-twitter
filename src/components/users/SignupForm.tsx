@@ -3,13 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
+	signInWithPopup,
 	GoogleAuthProvider,
 	GithubAuthProvider,
-	signInWithPopup,
 } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignupForm() {
 	const [error, setError] = useState<string>('');
@@ -37,7 +36,8 @@ export default function SignupForm() {
 
 		if (name === 'email') {
 			setEmail(value);
-			const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+			const validRegex =
+				/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 			if (!value?.match(validRegex)) {
 				setError('이메일 형식이 올바르지 않습니다.');
@@ -87,7 +87,10 @@ export default function SignupForm() {
 			provider = new GithubAuthProvider();
 		}
 
-		await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider)
+		await signInWithPopup(
+			auth,
+			provider as GithubAuthProvider | GoogleAuthProvider
+		)
 			.then((result) => {
 				console.log(result);
 				toast.success('로그인 되었습니다.');
@@ -104,11 +107,25 @@ export default function SignupForm() {
 			<div className="form__title">회원가입</div>
 			<div className="form__block">
 				<label htmlFor="email">이메일</label>
-				<input type="text" name="email" id="email" value={email} onChange={onChange} required />
+				<input
+					type="text"
+					name="email"
+					id="email"
+					value={email}
+					required
+					onChange={onChange}
+				/>
 			</div>
 			<div className="form__block">
 				<label htmlFor="password">비밀번호</label>
-				<input type="password" name="password" id="password" value={password} onChange={onChange} required />
+				<input
+					type="password"
+					name="password"
+					id="password"
+					value={password}
+					onChange={onChange}
+					required
+				/>
 			</div>
 			<div className="form__block">
 				<label htmlFor="password_confirmation">비밀번호 확인</label>
@@ -121,11 +138,12 @@ export default function SignupForm() {
 					required
 				/>
 			</div>
-			{error && error.length > 0 && (
+			{error && error?.length > 0 && (
 				<div className="form__block">
 					<div className="form__error">{error}</div>
 				</div>
 			)}
+
 			<div className="form__block">
 				계정이 있으신가요?
 				<Link to="/users/login" className="form__link">
@@ -133,18 +151,32 @@ export default function SignupForm() {
 				</Link>
 			</div>
 			<div className="form__block--lg">
-				<button type="submit" className="form__btn--submit" disabled={error?.length > 0}>
+				<button
+					type="submit"
+					className="form__btn--submit"
+					disabled={error?.length > 0}
+				>
 					회원가입
 				</button>
 			</div>
 			<div className="form__block">
-				<button type="button" name="google" className="form__btn--google" onClick={onClickSocialLogin}>
+				<button
+					type="button"
+					name="google"
+					className="form__btn--google"
+					onClick={onClickSocialLogin}
+				>
 					Google로 회원가입
 				</button>
 			</div>
 			<div className="form__block">
-				<button type="button" name="github" className="form__btn--github" onClick={onClickSocialLogin}>
-					Gitub로 회원가입
+				<button
+					type="button"
+					name="github"
+					className="form__btn--github"
+					onClick={onClickSocialLogin}
+				>
+					Github으로 회원가입
 				</button>
 			</div>
 		</form>

@@ -1,11 +1,13 @@
+import { doc, getDoc } from 'firebase/firestore';
+
 import Loader from 'components/loader/Loader';
 import PostBox from 'components/posts/PostBox';
-import PostHeader from 'components/posts/PostHeader';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from 'firebaseApp';
 import { PostProps } from 'pages/home';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { db } from 'firebaseApp';
+
+import PostHeader from 'components/posts/PostHeader';
 
 export default function PostDetail() {
 	const params = useParams();

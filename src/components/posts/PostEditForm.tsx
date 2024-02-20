@@ -1,12 +1,17 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { FiImage } from 'react-icons/fi';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db, storage } from 'firebaseApp';
 
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PostProps } from 'pages/home';
-import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
+import {
+	getDownloadURL,
+	ref,
+	uploadString,
+	deleteObject,
+} from 'firebase/storage';
 import AuthContext from 'context/AuthContext';
 import { v4 as uuidv4 } from 'uuid';
 import PostHeader from './PostHeader';
@@ -28,7 +33,6 @@ export default function PostEditForm() {
 		} = e;
 
 		const file = files?.[0];
-
 		const fileReader = new FileReader();
 		fileReader?.readAsDataURL(file);
 
@@ -54,7 +58,6 @@ export default function PostEditForm() {
 		const key = `${user?.uid}/${uuidv4()}`;
 		const storageRef = ref(storage, key);
 		e.preventDefault();
-
 		try {
 			if (post) {
 				// 기존 사진 지우고 새로운 사진 업로드
@@ -65,7 +68,7 @@ export default function PostEditForm() {
 					});
 				}
 
-				// 새로운 사진이 있다면 업로드
+				// 새로운 파일 있다면 업로드
 				let imageUrl = '';
 				if (imageFile) {
 					const data = await uploadString(storageRef, imageFile, 'data_url');
@@ -74,11 +77,11 @@ export default function PostEditForm() {
 
 				const postRef = doc(db, 'posts', post?.id);
 				await updateDoc(postRef, {
-					content,
+					content: content,
 					hashTags: tags,
-					imageUrl,
+					imageUrl: imageUrl,
 				});
-				navigate(`posts/${post?.id}`);
+				navigate(`/posts/${post?.id}`);
 				toast.success('게시글을 수정했습니다.');
 			}
 			setImageFile(null);
@@ -108,6 +111,8 @@ export default function PostEditForm() {
 
 	const handleKeyUp = (e: any) => {
 		if (e.keyCode === 32 && e.target.value.trim() !== '') {
+			// 만약 같은 태그가 있다면 에러를 띄운다
+			// 아니라면 태그를 생성해준다
 			if (tags?.includes(e.target.value?.trim())) {
 				toast.error('같은 태그가 있습니다.');
 			} else {
@@ -122,34 +127,35 @@ export default function PostEditForm() {
 	};
 
 	useEffect(() => {
-		if (params?.id) {
-			getPost();
-		}
-	}, [getPost]);
+		if (params.id) getPost();
+	}, [getPost, params.id]);
 
 	return (
 		<div className="post">
 			<PostHeader />
 			<form className="post-form" onSubmit={onSubmit}>
 				<textarea
+					className="post-form__textarea"
+					required
 					name="content"
 					id="content"
-					className="post-form__textarea"
 					placeholder="What is happening?"
 					onChange={onChange}
 					value={content}
-					required
 				/>
 				<div className="post-form__hashtags">
 					<span className="post-form__hashtags-outputs">
 						{tags?.map((tag, index) => (
-							<span className="post-form__hashtags-tag" key={index} onClick={() => removeTag(tag)}>
+							<span
+								className="post-form__hashtags-tag"
+								key={index}
+								onClick={() => removeTag(tag)}
+							>
 								#{tag}
 							</span>
 						))}
 					</span>
 					<input
-						type="text"
 						className="post-form__input"
 						name="hashtag"
 						id="hashtag"
@@ -168,21 +174,34 @@ export default function PostEditForm() {
 							type="file"
 							name="file-input"
 							id="file-input"
-							className="hidden"
 							accept="image/*"
 							onChange={handleFileUpload}
+							className="hidden"
 						/>
-
 						{imageFile && (
 							<div className="post-form__attachment">
-								<img src={imageFile} alt="attachment" width={100} height={100} />
-								<button className="post-form__clear-btn" onClick={handleDeleteImage}>
+								<img
+									src={imageFile}
+									alt="attachment"
+									width={100}
+									height={100}
+								/>
+								<button
+									className="post-form__clear-btn"
+									type="button"
+									onClick={handleDeleteImage}
+								>
 									Clear
 								</button>
 							</div>
 						)}
 					</div>
-					<input type="submit" value="수정" className="post-form__submit-btn" disabled={isSubmitting} />
+					<input
+						type="submit"
+						value="수정"
+						className="post-form__submit-btn"
+						disabled={isSubmitting}
+					/>
 				</div>
 			</form>
 		</div>
