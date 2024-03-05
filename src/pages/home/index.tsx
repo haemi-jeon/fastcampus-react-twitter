@@ -58,7 +58,7 @@ export default function HomePage() {
 					);
 			});
 		}
-	}, []);
+	}, [user?.uid]);
 
 	useEffect(() => {
 		if (user) {
